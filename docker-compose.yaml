@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_DB: epsumstockmanagement
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Bon@4Live!
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persist PostgreSQL data
+    ports:
+      - "5432:5432"
+    networks:
+      - db_network
+
+  pgadmin:
+    image: dpage/pgadmin4:7.8
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: epsummessi@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: Bon@4Live!
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin  # Persist pgAdmin config
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - db_network
+
+volumes:
+  postgres_data:  # PostgreSQL data volume
+  pgadmin_data:   # pgAdmin config volume
+
+networks:
+  db_network:     # Shared network
