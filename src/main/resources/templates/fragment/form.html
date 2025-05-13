@@ -1,0 +1,73 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<div th:fragment="text-field (label, inputName, icon)" class="mb-3">
+  <label th:text="${label}" th:for="${inputName}" class="form-label"></label>
+  <div class="input-group">
+    <span class="input-group-text rounded-0 bg-white"><i th:class="|bi ${icon}|"></i></span>
+    <input
+        th:field="*{__${inputName}__}"
+        class="form-control rounded-0"
+        th:id="${inputName}"
+        th:placeholder="${placeholder}"
+        th:required="${required} ? 'required' : null"
+        th:attr="x-mask+':'+dynamic=${dynamicMask}">
+    <div th:text="${invalidMessage?: 'Please enter this field'}" class="invalid-feedback"></div>
+  </div>
+</div>
+
+<div th:fragment="number-field (label, inputName, icon)" class="mb-3">
+  <label th:text="${label}" th:for="${inputName}" class="form-label"></label>
+  <div class="input-group">
+    <span class="input-group-text rounded-0 bg-white"><i th:class="|bi ${icon}|"></i></span>
+    <input
+        type="number"
+        th:min="${min}?: null"
+        th:max="${max}?: null"
+        th:step="${step}?: null"
+        th:field="*{__${inputName}__}"
+        class="form-control rounded-0"
+        th:id="${inputName}"
+        th:placeholder="${placeholder}"
+        th:required="${required} ? 'required' : null">
+    <div th:text="${invalidMessage?: 'Please enter this field'}" class="invalid-feedback"></div>
+  </div>
+</div>
+
+<div layout:fragment="select-field (label, inputName, icon)" class="mb-3">
+  <label th:text="${label}" th:for="${inputName}" class="form-label"></label>
+  <div class="input-group">
+    <span class="input-group-text rounded-0 bg-white"><i th:class="|bi ${icon}|"></i></span>
+    <select
+        th:name="${inputName}"
+        class="form-select rounded-0"
+        th:id="${inputName}"
+        th:required="${required} ? 'required' : null">
+      <th:block layout:fragment="select-field-options"></th:block>
+    </select>
+    <div th:text="${invalidMessage?: 'Please enter this field'}" class="invalid-feedback"></div>
+  </div>
+</div>
+
+<div th:fragment="password-field (label, name)" class="mb-3">
+  <label th:text="${label}" th:for="${id?: name}" class="form-label"></label>
+  <div class="input-group" x-data>
+    <span class="input-group-text rounded-0 bg-white"><i class="bi bi-lock-fill"></i></span>
+    <input
+        type="password"
+        th:name="${name}"
+        class="form-control rounded-0"
+        id="${id?: name}"
+        th:placeholder="${placeholder}"
+        th:required="${required} ? 'required' : null">
+    <button
+        @click="togglePassword($root.children[1], $root.children[2].children[0])"
+        type="button"
+        class="input-group-text rounded-0 bg-white">
+      <i class="bi bi-eye-slash-fill"></i>
+    </button>
+    <div th:text="${error?: ''}" class="invalid-feedback"></div>
+  </div>
+</div>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/layout">
+
+<head>
+  <script th:if="${deleteNotAllowed}" th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      new bootstrap.Modal(document.getElementById('alert')).show();
+    });
+  </script>
+  <script th:if="${mappingError}" th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      new bootstrap.Modal(document.getElementById('alert-file')).show();
+    });
+  </script>
+</head>
+
+<body>
+
+  <main layout:fragment="content" x-data="{ currentForm: null }">
+
+    <div class="navbar navbar-expand-lg py-4">
+      <div class="container-fluid px-0">
+        <h2 th:text="#{customer-table.title}" class="h4 mb-0 d-none d-sm-block"></h2>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="me-4 flex-shrink-0 btn btn-primary rounded-0"
+                  data-bs-toggle="modal" data-bs-target="#fileModal">
+            <span th:text="#{customer-table.import-csv}"></span>
+            <i class="bi bi-upload"></i>
+          </button>
+          <div th:replace="~{fragment/search(
+            searchParam='name',
+            searchUrl='/customers/find',
+            listUrl='/customers/list',
+            placeholder=#{customer-table.search-customers-placeholder}
+          )}"></div>
+          <a th:href="@{/customers/create}" th:text="#{customer-table.add-customer}" class="ms-4 flex-shrink-0 btn btn-success px-4 rounded-0"></a>
+        </div>
+      </div>
+    </div>
+
+    <div layout:replace="~{fragment/table :: table(
+      headings=${ {
+        'customer-table.name-heading',
+        'customer-table.address-heading',
+        'customer-table.phone-heading',
+        'customer-table.actions-heading'
+      } }
+    )}">
+      <tbody layout:fragment="table-data">
+      <th:block th:if="${customers.size() == 0}">
+        <div th:replace="~{fragment/table :: row-empty(
+          colspan=4
+        )}"></div>
+      </th:block>
+      <th:block th:each="customer : ${customers}">
+        <div th:replace="~{fragment/table :: row(
+          cells=${ {customer.name, customer.address, customer.phone} },
+          updateUrl='/customers/update/__${customer.id}__',
+          deleteUrl='/customers/delete/__${customer.id}__'
+        )}"></div>
+      </th:block>
+      </tbody>
+    </div>
+
+    <div th:replace="~{fragment/pagination(
+      url='/customers/list',
+      currentPage=${currentPage},
+      totalPages=${totalPages}
+    )}"></div>
+
+    <div th:replace="~{fragment/confirm-dialog}"></div>
+
+    <div th:if="${deleteNotAllowed}" th:replace="~{fragment/alert-dialog(
+      title=#{customer-alert-dialog.title},
+      description=#{customer-alert-dialog.description},
+      dismiss=#{customer-alert-dialog.ok}
+    )}"></div>
+
+    <div th:if="${mappingError}" th:replace="~{fragment/alert-dialog(
+      id='alert-file',
+      title=#{customer-csv-alert-dialog.title},
+      description=#{customer-csv-alert-dialog.description},
+      dismiss=#{customer-csv-alert-dialog.ok}
+    )}"></div>
+
+    <div class="modal fade" id="fileModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content rounded-0">
+          <div class="modal-body">
+            <form class="input-group me-4" th:action="@{/customers/create-all}" method="post" enctype="multipart/form-data">
+              <input id="files" class="form-control" type="file" accept=".csv" name="customers">
+              <button class="btn btn-primary rounded-0"><i class="bi bi-upload"></i></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+
+</html>

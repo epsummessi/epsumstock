@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: epsumpstockmanagement
+    runtime: java
+    buildCommand: ./gradlew build
+    startCommand: java -jar build/libs/*.jar --spring.profiles.active=prod
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: PORT
+        value: 8080

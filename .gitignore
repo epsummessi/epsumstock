@@ -1,0 +1,64 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# Docker files
+/docker-compose*
+/Dockerfile
+/docker/
+
+# Git related
+/.git/
+/.github/
+
+# Build outputs
+/build/
+/out/
+*.jar
+*.war
+*.ear
+
+# Environment files
+.env
+*.env
+/config/application-*.yml
+!config/application.yml
+!config/application-prod.yml
+
+# Log files
+*.log
+/logs/

@@ -1,0 +1,26 @@
+spring:
+  jpa:
+    hibernate.ddl-auto: none
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:database/schema.sql
+  mail:
+    host: localhost
+    port: 3025
+    username: myuser
+    password: secret
+    properties:
+      mail.transport.protocol: smtp
+      mail.smtp.auth: true
+      mail.starttls.enable: false
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE

@@ -1,0 +1,33 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/epsumstockmanagement
+    username: postgres
+    password: Bon@4Live!
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  mail:
+    host: localhost
+    port: 1025
+    test-connection: true
+
+server:
+  port: 8484
+
+pgadmin:
+  url: http://localhost:5050
+  email: epsummessi@gmail.com
+  password: Bon@4Live!

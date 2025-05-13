@@ -1,0 +1,9 @@
+spring:
+  messages:
+    basename: messages/messages
+    encoding: UTF-8
+  profiles:
+    active: local # Default profile
+
+server:
+  port: 8484 # Default port (overridden in production)

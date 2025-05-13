@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <th:block th:replace="~{fragment/head}"></th:block>
+</head>
+
+<body style="background-color: #f7f7f7;">
+
+  <div class="container-fluid">
+    <main class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+
+      <div class="container-fluid mb-5 p-0 bg-white" style="max-width: 400px;">
+
+        <h2 th:text="#{register-form.title}" class="h5 border bg-dark text-white text-center p-3 mb-3"></h2>
+
+        <form th:action="@{/register}" method="post" class="needs-validation px-4" novalidate x-data @submit="validateForm($el, $event)">
+
+          <div th:if="${duplicatedEmail}" th:text="#{register-form.invalid-message}" class="alert alert-danger rounded-0"></div>
+
+          <div class="mb-3">
+            <label class="form-label" for="name" th:text="#{register-form.name-label}"></label>
+            <div class="input-group">
+              <span class="input-group-text rounded-0 bg-white"><i class="bi bi-person-fill"></i></span>
+              <input class="form-control shadow-none rounded-0" id="name" name="name" th:placeholder="#{register-form.name-placeholder}" required>
+              <div th:text="#{register-form.name-invalid-message}" class="invalid-feedback"></div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="email" th:text="#{register-form.email-label}"></label>
+            <div class="input-group">
+              <span class="input-group-text rounded-0 bg-white"><i class="bi bi-envelope-fill"></i></span>
+              <input type="email" class="form-control shadow-none rounded-0" id="email" name="email" th:placeholder="#{register-form.email-placeholder}" required>
+              <div th:text="#{register-form.email-invalid-message}" class="invalid-feedback"></div>
+            </div>
+          </div>
+
+          <div th:replace="~{fragment/form :: password-field(
+            label=#{register-form.password-label},
+            name='password',
+            error=#{register-form.password-invalid-message},
+            placeholder=#{register-form.password-placeholder},
+            required=true
+          )}"></div>
+
+          <div class="my-4 py-2">
+            <button type="submit" th:text="#{register-form.submit}" class="btn btn-success w-100 px-5 py-1 rounded-0"></button>
+          </div>
+
+          <hr class="hr">
+
+          <div class="pb-4 text-center">
+            <p class="d-inline" th:text="#{register-form.login-message}"></p>
+            <a class="d-inline" th:href="@{/login}" th:text="#{register-form.login-link}"></a>
+          </div>
+
+        </form>
+      </div>
+
+    </main>
+  </div>
+
+</body>
