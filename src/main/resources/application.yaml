@@ -3,7 +3,6 @@ spring:
     basename: messages/messages
     encoding: UTF-8
   profiles:
-    active: local # Default profile
-
+    active: ${SPRING_PROFILES_ACTIVE:local} # Default to local unless set
 server:
-  port: 8484 # Default port (overridden in production)
+  port: ${PORT:8484}
