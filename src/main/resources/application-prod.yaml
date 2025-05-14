@@ -13,8 +13,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate  # Changed from 'none' for production
-    show-sql: false       # Disable in production
+      ddl-auto: validate
+    show-sql: false
     properties:
       hibernate:
         format_sql: false
@@ -22,8 +22,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: epsummessi@gmail.com
-    password: zdoe oafa nlnc hqfs
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     protocol: smtp
     properties:
       mail:
@@ -33,6 +33,4 @@ spring:
             enable: true
 
 server:
-  port: ${PORT}  # Render will provide this
-
-# Remove pgAdmin config for production
+  port: ${PORT:8080}  # Fallback to 8080 if PORT not set
