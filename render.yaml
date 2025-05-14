@@ -8,7 +8,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: DATABASE_URL
-        value: jdbc:postgresql://your-host:5432/your-db
+        value: jdbc:postgresql://epsum:5432/epsumstockmanagement
       - key: DATABASE_USERNAME
         value: your-db-username
       - key: DATABASE_PASSWORD
