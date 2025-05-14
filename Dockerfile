@@ -3,35 +3,31 @@ FROM eclipse-temurin:21-jdk-alpine AS build
 
 WORKDIR /app
 
-# 1. First copy only build files (better caching)
+# 1. First copy ONLY the absolutely essential wrapper files
 COPY gradlew .
-COPY gradle gradle
+COPY gradle/wrapper gradle/wrapper
+COPY gradle/wrapper/gradle-wrapper.jar gradle/wrapper/
+COPY gradle/wrapper/gradle-wrapper.properties gradle/wrapper/
+
+# 2. Verify the wrapper files exist (debugging step)
+RUN ls -la gradlew && \
+    ls -la gradle/wrapper/
+
+# 3. Make gradlew executable and verify
+RUN chmod +x gradlew && \
+    ./gradlew --version || { echo "Gradle wrapper verification failed"; ls -la gradle/wrapper/; exit 1; }
+
+# 4. Now copy the rest of the application
 COPY build.gradle .
 COPY settings.gradle .
 COPY src src
 
-# 2. Make gradlew executable and verify wrapper
-RUN chmod +x gradlew && \
-    ./gradlew --version || { echo "Gradle wrapper verification failed"; exit 1; }
-
-# 3. Build with dependency caching
+# 5. Build with clean cache
 RUN ./gradlew clean build -x test -x check --no-daemon
 
 # ---- RUNTIME STAGE ----
 FROM eclipse-temurin:21-jre-alpine
-
 WORKDIR /app
-
-# Environment configuration
-ENV SPRING_PROFILES_ACTIVE=prod \
-    PORT=8080
-
-# Copy the built jar (with explicit name)
-COPY --from=build /app/build/libs/*-SNAPSHOT.jar app.jar
-
-# Health check (recommended for production)
-HEALTHCHECK --interval=30s --timeout=3s \
-    CMD wget -q -O /dev/null http://localhost:$PORT/actuator/health || exit 1
-
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENV SPRING_PROFILES_ACTIVE=prod PORT=8080
+COPY --from=build /app/build/libs/*.jar app.jar
+CMD ["java", "-jar", "app.jar"]
