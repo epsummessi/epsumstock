@@ -1,11 +1,16 @@
-.git
-.gitignore
-.gradle
-build
-out
+# Ignore version control and IDE files
+.git/
+.gradle/
+.idea/
 *.iml
-.idea
+
+# Ignore build outputs
+build/
+out/
 *.log
-Dockerfile
-docker-compose.yaml
-README.md
+
+# Keep these (do not ignore):
+!gradlew
+!gradlew.bat
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
