@@ -2,18 +2,25 @@ services:
   - type: web
     name: epsumstock-app
     env: docker
-    plan: free
+    plan: starter
     autoDeploy: true
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: DATABASE_URL
-        value: jdbc:postgresql://epsum:5432/epsumstockmanagement
+        value: ${DATABASE_URL}
       - key: DATABASE_USERNAME
-        value: your-db-username
+        value: ${DATABASE_USERNAME}
       - key: DATABASE_PASSWORD
-        value: your-db-password
+        value: ${DATABASE_PASSWORD}
       - key: MAIL_USERNAME
-        value: epsummessi@gmail.com
+        value: ${MAIL_USERNAME}
       - key: MAIL_PASSWORD
-        value: zdoe oafa nlnc hqfs
+        value: ${MAIL_PASSWORD}
+
+databases:
+  - name: epsumstock-db
+    plan: starter
+    databaseName: epsumstockmanagement
+    user: postgres
+    ipAllowList: []  # allow all by default, or add your own IPs
