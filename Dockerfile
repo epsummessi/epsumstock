@@ -3,24 +3,22 @@ FROM eclipse-temurin:21-jdk-alpine AS build
 
 WORKDIR /app
 
-# 1. Copy wrapper files first (using absolute paths)
+# 1. Copy wrapper files with explicit paths
 COPY gradlew .
-COPY gradle/wrapper gradle/wrapper/
-COPY gradle/wrapper/gradle-wrapper.jar gradle/wrapper/
-COPY gradle/wrapper/gradle-wrapper.properties gradle/wrapper/
+COPY gradle gradle
 
-# 2. Debug: Verify files exist in container
+# 2. Verify files were copied correctly
 RUN ls -la gradlew && \
     ls -la gradle/wrapper/ && \
-    [ -f gradle/wrapper/gradle-wrapper.jar ] || { echo "Wrapper JAR missing!"; exit 1; }
+    [ -f gradle/wrapper/gradle-wrapper.jar ] || { echo "ERROR: gradle-wrapper.jar missing!"; exit 1; }
 
 # 3. Make gradlew executable
 RUN chmod +x gradlew
 
-# 4. Verify wrapper works
-RUN ./gradlew --version || { echo "Gradle verification failed"; exit 1; }
+# 4. Test Gradle wrapper
+RUN ./gradlew --version || { echo "ERROR: Gradle wrapper failed"; exit 1; }
 
-# 5. Copy build files
+# 5. Copy remaining files
 COPY build.gradle .
 COPY settings.gradle .
 COPY src src
